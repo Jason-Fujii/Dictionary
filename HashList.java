@@ -1,4 +1,11 @@
 /*
+Jason Fujii
+CSC-340.05 TOE
+Professor Ta
+*/
+
+
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -26,7 +33,7 @@ public class HashList {
     Check if the word is already a key in the hashtable
         if yes, add the rest of the entry to the ArrayList
         if no, add the key, then create an ArrayList
-    */
+    */    
     public void add(Entry entry)
     {
         String key = entry.getWord();
@@ -39,6 +46,19 @@ public class HashList {
             ArrayList<Entry> list = new ArrayList<Entry>();
             table.put(key, list);
             table.get(key).add(entry);
+        }
+    }
+    
+    /*
+    iterates through the enum, turns every element into an Entry object, and adds 
+    that Entry object to the hashList.
+    */
+    public void addEnum()
+    {
+        for(DictionaryEnum vals: DictionaryEnum.values())
+        {
+            Entry entry = new Entry(vals);
+            add(entry);
         }
     }
     
@@ -59,7 +79,7 @@ public class HashList {
             }
         }
         else
-            System.out.println("The dictionary is empty...");
+            System.out.println("\tThe dictionary is empty...");
     }
     /*
     remove() removes an Entry object from the Hashlist
@@ -85,7 +105,7 @@ public class HashList {
                 System.out.println("| \n<NOT FOUND> To be considered for the next release.\n|");
         }
         else
-            System.out.println("The dictionary is empty...");
+            System.out.println("\tThe dictionary is empty...");
     }
     
     /*
@@ -97,7 +117,9 @@ public class HashList {
     */
     public void Search(String key)
     {
+        System.out.println("\t|");
         printKey(key);
+        System.out.println("\t|");
     }
     
     /*
@@ -107,7 +129,9 @@ public class HashList {
     */
     public void Search(String key, String pos)
     {
-        
+        System.out.println("\t|");
+        printPOS(key, pos);
+        System.out.println("\t|");
     }
     
     /*
@@ -116,23 +140,43 @@ public class HashList {
     it searches the table for the chosen key, finds the values with the specified
     pos, then skips over any repeat values
     */
-    public void Search(String key, String pos, String dist)
+    public void Search(String key, String pos, boolean dist ,boolean rev)
     {
-        
+        if(pos.isEmpty() && dist == false && rev == false)
+        {
+            Search(key);
+        }
+        else if(dist == false && rev == false)
+        {
+            Search(key, pos);
+        }
+        else if(pos.isEmpty() && dist == false)
+        {
+            //reverse
+            qualifiedPrint(key, "", false, true);
+        }
+        else if(pos.isEmpty() && rev == false)
+        {
+            //dist
+            qualifiedPrint(key, "", true, false);
+        }
+        else if(dist == false)
+        {
+            //pos && rev
+            qualifiedPrint(key, pos, false, true);
+        }
+        else if(rev == false)
+        {
+            //pos && dist
+            qualifiedPrint(key, pos, true, false);
+        }
+        else
+        {
+            //pos, dist, && rev
+            qualifiedPrint(key, pos, true, true);
+        }
     }
     
-    /*
-    Search(key, pos, dist, rev) is used when the user inputs 4 values: a key,
-    a part of speech (pos), the qualifier "distinct," and the qualifier "reverse."
-    it searches the table for the chosen key, finds the values with the specified
-    pos, skips over and repeat values, and prints them in reverse order
-    */
-    public void Search(String key, String pos, String dist, String rev)
-    {
-        
-    }
-    
-    //-------------------------------printAll doesn't work-------------------------------------------------------------
     /*
     Prints out the entirety of the table in the format:
     [word] [pos] : [desc]
@@ -140,7 +184,7 @@ public class HashList {
     public void printAll()
     {
         if(table.isEmpty())
-            System.out.println("The dictionary is empty...");
+            System.out.println("\tThe dictionary is empty...");
         else
         {
             Set<String> keys = table.keySet();
@@ -148,7 +192,7 @@ public class HashList {
             {
                 for(int i = 0; i < table.get(k).size(); i++)
                 {
-                    System.out.println(table.get(k).get(i).toString());
+                    System.out.println("\t" + table.get(k).get(i).toString());
                 }
             }
         }
@@ -162,7 +206,7 @@ public class HashList {
     {
         if(table.isEmpty())
         {
-            System.out.println("The dictionary is empty...");
+            System.out.println("\tThe dictionary is empty...");
         }
         else
         {
@@ -170,11 +214,11 @@ public class HashList {
             {
                 for(int i = 0; i < table.get(key).size(); i++)
                 {
-                    System.out.println(table.get(key).get(i).toString());
+                    System.out.println("\t" + table.get(key).get(i).toString());
                 }
             }
             else
-                System.out.println("| \n<NOT FOUND> To be considered for the next release.\n|");
+                System.out.println("\t| \n\t<NOT FOUND> To be considered for the next release.\n\t|");
         }
     }
     
@@ -184,7 +228,7 @@ public class HashList {
     public void printPOS(String key, String pos)
     {
         if(table.isEmpty())
-            System.out.println("The dictionary is empty...");
+            System.out.println("\tThe dictionary is empty...");
         else
         {
             if(table.containsKey(key))
@@ -194,18 +238,42 @@ public class HashList {
                 {
                     if(table.get(key).get(i).getPOS().equals(pos))
                     {
-                        System.out.println(table.get(key).get(i).toString());
+                        System.out.println("\t" + table.get(key).get(i).toString());
                         count++;
                     }
                 }
                 if(count == 0)
-                    System.out.println("| \n<NOT FOUND> To be considered for the next release.\n|");
+                    System.out.println("\t| \n<NOT FOUND> To be considered for the next release.\n\t|");
             }
             else
-                System.out.println("| \n<NOT FOUND> To be considered for the next release.\n|");
+                System.out.println("\t| \n<NOT FOUND> To be considered for the next release.\n\t|");
         }
     }
     
+    public void printDistinct(ArrayList<Entry> list, String pos)
+    {
+        if(!pos.isEmpty())
+        {
+            int count = 0;
+            for(Entry e: list)
+            {
+                if(e.getPOS().equals(pos))
+                {
+                    System.out.println("\t" + e.toString());
+                    count++;
+                }
+            }
+            if(count == 0)
+                System.out.println("\t<NOT FOUND> To be considered for the next release.\n\t|");
+        }
+        else
+        {
+            for(Entry e: list)
+            {
+                System.out.println("\t" + e.toString());
+            }
+        }
+    }
     /*
     qualifiedPrint(key, dist, rev) is a printing method that accounts for the 
     qualifiers distinct and reverse. If distinct is true, qualifiedPrint makes sure
@@ -218,44 +286,143 @@ public class HashList {
         {
             if(table.containsKey(key))
             {
-                //dist & rev are *BOTH* true
-                //flip the list first, then do distinct
-                //Make a set (no repeat entries), iterate through the ArrayList backwards, then print the set. Then delete the set
-                if(dist && rev)
+                if(!pos.isEmpty())
                 {
-                    
+                    //dist & rev are *BOTH* true
+                    //flip the list first, then do distinct
+                    //Make a set (no repeat entries), iterate through the ArrayList backwards, then print the set. Then delete the set
+                    if(dist && rev)
+                    {
+                        ArrayList<Entry> distinct = distinctify(key);
+                        System.out.println("\t|");
+                        reversePrint(distinct, pos);
+                        System.out.println("\t|");
+                    }
+                    //only dist is true
+                    //do distinct
+                    //Make a set (no repeat entries), then print out the elements Then delete the set
+                    else if(dist)
+                    {
+                        ArrayList<Entry> distinct = distinctify(key);
+                        System.out.println("\t|");
+                        printDistinct(distinct, pos);
+                        System.out.println("\t|");
+                    }
+                    //only rev is true
+                    //reverse the list
+                    //iterate through the arraylist backwards
+                    else if(rev)
+                    {
+                        System.out.println("\t|");
+                        reversePrint(table.get(key), pos);
+                        System.out.println("\t|");
+                    }
+                    //both are false
+                    //call print
+                    else
+                    {
+                        System.out.println("\t|");
+                        printPOS(key, pos);
+                        System.out.println("\t|");
+                    }
                 }
-                //only dist is true
-                //do distinct
-                //Make a set (no repeat entries), then print out the elements Then delete the set
-                else if(dist)
-                {
-                    Set<Entry> entries = new HashSet<Entry>();
-                    
-                }
-                //only rev is true
-                //reverse the list
-                //iterate through the arraylist backwards
-                else if(rev)
-                {
-                    
-                }
-                //both are false
-                //call print
                 else
                 {
-                    printPOS(key, pos);
+                    //dist & rev are *BOTH* true
+                    //flip the list first, then do distinct
+                    //Make a set (no repeat entries), iterate through the ArrayList backwards, then print the set. Then delete the set
+                    if(dist && rev)
+                    {
+                        ArrayList<Entry> distinct = distinctify(key);
+                        System.out.println("\t|");
+                        reversePrint(distinct, "");
+                        System.out.println("\t|");
+                    }
+                    //only dist is true
+                    //do distinct
+                    //Make a set (no repeat entries), then print out the elements Then delete the set
+                    else if(dist)
+                    {
+                        ArrayList<Entry> distinct = distinctify(key);
+                        System.out.println("\t|");
+                        printDistinct(distinct, "");
+                        System.out.println("\t|");
+                    }
+                    //only rev is true
+                    //reverse the list
+                    //iterate through the arraylist backwards
+                    else if(rev)
+                    {
+                        System.out.println("\t|");
+                        reversePrint(table.get(key), "");
+                        System.out.println("\t|");
+                    }
+                    //both are false
+                    //call print
+                    else
+                    {
+                        System.out.println("\t|");
+                        printPOS(key, "");
+                        System.out.println("\t|");
+                    }
                 }
             }
             else
-                System.out.println("| \n<NOT FOUND> To be considered for the next release.\n|");
+                System.out.println("\t| \n\t<NOT FOUND> To be considered for the next release.\n\t|");
         }
         else
-            System.out.println("The dictionary is empty...");
+            System.out.println("\tThe dictionary is empty...");
+    }
+    
+    public ArrayList<Entry> distinctify(String key)
+    {
+        
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+        if(table.containsKey(key))
+            {
+            entries.add(table.get(key).get(0));
+            for(int i = 0; i < table.get(key).size(); i++)
+            {
+                boolean dist = true;
+                for(int set = 0; set < entries.size(); set++)
+                {
+                    if(table.get(key).get(i).compareTo(entries.get(set)))
+                        dist = false;
+                }
+                if(dist)
+                    entries.add(table.get(key).get(i));
+            }
+        }
+        return entries;
+    }
+    
+    public void reversePrint(ArrayList<Entry> list, String pos)
+    {
+        if(pos.isEmpty())
+        {
+            for(int i = list.size() - 1; i >= 0; i--)
+            {
+                System.out.println("\t" + list.get(i).toString());
+            }
+        }
+        else
+        {
+            int count = 0;
+            for(int i = list.size() - 1; i >= 0; i--)
+            {
+                if(list.get(i).getPOS().equals(pos))
+                {
+                    System.out.println("\t" + list.get(i).toString());
+                    count++;
+                }
+            }
+            if(count == 0)
+                System.out.println("\t<NOT FOUND> To be considered for the next release. Thank you.");
+        }
     }
 }
 
-
+//Entry.compareTo(Entry e);
 /*
 Hashtable methods to remember:
     - contains(Object val): returns true if some key matches val

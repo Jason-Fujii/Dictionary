@@ -199,6 +199,24 @@ public class HashList {
         
     }
     
+    public void printAllKeys()
+    {
+        ArrayList<String> keys = new ArrayList<String>();
+        for(DictionaryEnum dictEnum: DictionaryEnum.values())
+        {
+            if(keys.indexOf(dictEnum.getWord()) == -1)
+                keys.add(dictEnum.getWord());
+        }
+        
+        System.out.print("Choose from these entries:\n\t");
+        for(int i = 0; i < keys.size() - 1; i++)
+        {
+            System.out.print(keys.get(i) + ", ");
+            if(i%6 == 5)
+                System.out.print("\n\t");
+        }
+        System.out.println(keys.get(keys.size() - 1) + ".");
+    }
     /*
     Prints out the arrayList at the value Key
     */

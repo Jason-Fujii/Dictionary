@@ -59,20 +59,20 @@ public enum DictionaryEnum{
     Reverse14("Reverse","verb","To be updated..."),
     Reverse15("Reverse","verb","Turn something inside out."),
     Dinosaur("Dinosaur", "noun", "A fossil reptile of the Mesozoic era, in many species"
-            + "reaching an enormous size."),
+            + " reaching an enormous size."),
     Dinosaur2("Dinosaur", "noun", "A person or thing that is outdated or has become"
-            + "obsolete because of failure to adapt to changing circumstances."),
+            + " obsolete because of failure to adapt to changing circumstances."),
     Cartoon("Cartoon", "noun", "A simple drawing showing the features of its subjects"
-            + "in a humorously exaggerated way, especially in a satirical one in a newspaper"
-            + "or magazine"),
+            + " in a humorously exaggerated way, especially in a satirical one in a newspaper"
+            + " or magazine"),
     Cartoon2("Cartoon", "verb", "Make a drawing of something or someone in a simplified "
             + "or exaggerated way."),
     Rotund("Rotund","adjective","Plump"),
     Gelatin("Gelatin","noun","A virtually colorless and tasteless water-soluble protein"
-            + "prepared from collagen and used in food preparation as the basis of "
+            + " prepared from collagen and used in food preparation as the basis of "
             + "jellies, in photographic processes, and in glue."),
     Engineer("Engineer","noun","A person who designs, builds, or maintains engines,"
-            + "machines, or public works."),
+            + " machines, or public works."),
     Engineer2("Engineer", "verb", "Design and build (a machine or structure)"),
     Everything("Everything", "pronoun", "All things; all the things of a group or class"),
     Hashtable("Hashtable", "noun", "A data structure that can map keys to values"),
